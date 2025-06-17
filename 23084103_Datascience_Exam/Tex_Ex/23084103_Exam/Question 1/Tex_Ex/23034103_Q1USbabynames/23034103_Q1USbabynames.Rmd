@@ -3,7 +3,7 @@
 # Remove comments and add values where applicable.
 # The descriptions below should be self-explanatory
 
-title: "Helping You Write Academic Papers in R using Texevier"
+title: "A Data-Driven Exploration of Baby Naming Trends in the United States"
 #subtitle: "This will appear as Right Header"
 
 documentclass: "elsarticle"
@@ -25,23 +25,14 @@ Thesis_FP: FALSE
 # --------- Front Page
 # Comment: ----- Follow this pattern for up to 5 authors
 AddTitle: TRUE # Use FALSE when submitting to peer reviewed platform. This will remove author names.
-Author1: "Jane Doe^[__Contributions:__  \\newline _The authors would like to thank no institution for money donated to this project. Thank you sincerely._]"  # First Author - note the thanks message displayed as an italic footnote of first page.
-Ref1: "Some Institution, Cape Town, South Africa" # First Author's Affiliation
-Email1: "nfkatzke\\@gmail.com" # First Author's Email address
+Author1: "Linda Dube"
+Ref1: "Stellenbosch University, Western Cape" # First Author's Affiliation
+Email1: "23084103\\@sun.ac.za" # First Author's Email address
 
-Author2: "John Smith"
-Ref2: "Some other Institution, Cape Town, South Africa"
-Email2: "John\\@gmail.com"
-CommonAffiliation_12: TRUE # If Author 1 and 2 have a common affiliation. Works with _13, _23, etc.
 
-Author3: "John Doe"
-Email3: "Joe\\@gmail.com"
+CorrespAuthor_1: False  # If corresponding author is author 3, e.g., use CorrespAuthor_3: TRUE
 
-CorrespAuthor_1: TRUE  # If corresponding author is author 3, e.g., use CorrespAuthor_3: TRUE
 
-# Comment out below to remove both. JEL Codes only given if keywords also given.
-keywords: "Multivariate GARCH \\sep Kalman Filter \\sep Copula" # Use \\sep to separate
-JELCodes: "L250 \\sep L100"
 
 # ----- Manage headers and footers:
 #BottomLFooter: $Title$
@@ -91,8 +82,9 @@ output:
     template: Tex/TexDefault.txt
     fig_width: 3.5 # Adjust default figure sizes. This can also be done in the chunks of the text.
     fig_height: 3.5
+    latex_engine: xelatex
 abstract: |
-  Abstract to be written here. The abstract should not be too long and should provide the reader with a good understanding what you are writing about. Academic papers are not like novels where you keep the reader in suspense. To be effective in getting others to read your paper, be as open and concise about your findings here as possible. Ideally, upon reading your abstract, the reader should feel he / she must read your paper in entirety.
+ This study employs Spearman rank correlation analysis to examine longitudinal trends in U.S. baby naming practices from 1910 to 2014. By comparing annual rankings of the top 20 male and female names across consecutive years, we assess the temporal persistence of naming conventions. The results indicate significant transformations in naming patterns during the 1990s, reflecting evolving cultural influences on parental decision-making. These findings contribute to our understanding of how sociocultural factors shape intergenerational naming traditions in American society.
 ---
 
 <!-- First: Set your default preferences for chunk options: -->
@@ -123,301 +115,346 @@ write_rds(Example_data, path = "data/Example_data.rds")
 
 # Introduction \label{Introduction}
 
-References are to be made as follows: @fama1997[p. 33] and @grinold2000 Such authors could also be referenced in brackets [@grinold2000] and together [@fama1997 \& @grinold2000]. Source the reference code from scholar.google.com by clicking on ``cite'' below article name. Then select BibTeX at the bottom of the Cite window, and proceed to copy and paste this code into your ref.bib file, located in the directory's Tex folder. Open this file in Rstudio for ease of management, else open it in your preferred Tex environment. Add and manage your article details here for simplicity - once saved, it will self-adjust in your paper.
+This project investigates the dynamic evolution of baby naming conventions in the United States from the early 20th century to present day, analyzing how cultural, musical, and media influences have shaped naming trends. Using longitudinal data from Social Security records, Billboard charts, and entertainment media, I employ quantitative methods to identify patterns and disruptions in naming persistence. The study particularly examines the growing volatility in name popularity since the 1990s, contrasting traditional naming practices with modern, media-influenced choices. Through this analysis, I aim to illuminate the complex interplay between cultural phenomena and parental naming decisions across generations.
 
-> I suggest renaming the top line after \@article, as done in the template ref.bib file, to something more intuitive for you to remember. Do not change the rest of the code. Also, be mindful of the fact that bib references from google scholar may at times be incorrect. Reference Latex forums for correct bibtex notation.
+# Data and method {-}
 
-To reference a section, you have to set a label using ``\\label'' in R, and then reference it in-text as e.g. referencing a later section, Section \ref{Meth}.
+This study leverages four comprehensive datasets to analyze cultural influences on baby naming trends in the United States. The primary dataset consists of official Social Security Administration records documenting the annual popularity of baby names through 2015, providing a foundation for tracking naming patterns over time. To examine potential pop culture influences, we incorporate Billboard Hot 100 chart data spanning 1958-2015, which tracks weekly song and artist rankings based on sales, radio play, and streaming metrics. Additionally, we utilize movie and television data from HBO/TMDB, including titles, release years, and popularity scores, to identify correlations between character names and baby name trend
 
-Writing in Rmarkdown is surprizingly easy - see [this website](https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf) cheatsheet for a summary on writing Rmd writing tips.
 
-# Data  {-}
 
-Notice how I used the curly brackets and dash to remove the numbering of the data section.
+```{r}
+library(tidyverse)
+list.files("C:/Users/sukol/Documents/Masters frst semester/Data Science Exam/Data-Science-Exam/23084103_Datascience_Exam/Tex_Ex/23084103_Exam/code/Question1_Plots.R", full.names = T, recursive = T) %>% as.list() %>% walk(~source(.))
 
-Discussion of data should be thorough with a table of statistics and ideally a figure.
 
-In your tempalte folder, you will find a Data and a Code folder. In order to keep your data files neat, store all of them in your Data folder. Also, I strongly suggest keeping this Rmd file for writing and executing commands, not writing out long pieces of data-wrangling. In the example below, I simply create a ggplot template for scatter plot consistency. I suggest keeping all your data in a data folder.
+baby_names <- readRDS("C:/Users/sukol/Documents/Masters frst semester/Data Science Exam/Data-Science-Exam/23084103_Datascience_Exam/Tex_Ex/23084103_Exam/Question 1/Tex_Ex/23034103_Q1USbabynames/data/US_Baby_names/Baby_Names_By_US_State.rds")
+
+billboard <- readRDS("C:/Users/sukol/Documents/Masters frst semester/Data Science Exam/Data-Science-Exam/23084103_Datascience_Exam/Tex_Ex/23084103_Exam/Question 1/Tex_Ex/23034103_Q1USbabynames/data/US_Baby_names/charts.rds")
+
+hbo_titles <- readRDS("C:/Users/sukol/Documents/Masters frst semester/Data Science Exam/Data-Science-Exam/23084103_Datascience_Exam/Tex_Ex/23084103_Exam/Question 1/Tex_Ex/23034103_Q1USbabynames/data/US_Baby_names/HBO_titles.rds")
+
+hbo_credits <- readRDS("C:/Users/sukol/Documents/Masters frst semester/Data Science Exam/Data-Science-Exam/23084103_Datascience_Exam/Tex_Ex/23084103_Exam/Question 1/Tex_Ex/23034103_Q1USbabynames/data/US_Baby_names/HBO_credits.rds")
+
+library(skimr)
+
+skim(baby_names)
+
+```
+
+The dataset contains over 5.6 million baby name records from all U.S. states between 1910 and 2014, spread across six variables—three character and three numeric. Names are consistently recorded, with no missing values and over 30,000 unique entries. The distribution of years is broad and fairly even, while name counts per entry vary widely, suggesting a skew toward rare names. The dataset is clean, complete, and well-suited for time-series and trend analysis of naming patterns across gender, time, and state.
 
 <!-- The following is a code chunk. It must have its own unique name (after the r), or no name. After the comma follows commands for R which are self-explanatory. By default, the code and messages will not be printed in your pdf, just the output: -->
+\newpage
+
+
+Findings
+#  Spearman Rank Correlation of Baby Names
+
 
 ```{r Figure1, warning =  FALSE, fig.align = 'center', fig.cap = "Caption Here \\label{Figure1}", fig.height = 3, fig.width = 6, dev = 'png'}
-  # This is just a random plot to show you a plot. This is done if the getwd() does not point to your Template's directory.
-  # Set WD below to your project's working directory.
 
-  g <-
-  ggplot(data = mtcars) +
-  geom_point(aes(x = disp, y = hp, color = cyl)) +
-  theme_bw() +
-  # theme(legend.position = "none") +
-  theme(plot.title = element_text(size = 10)) +
-  theme(axis.title = element_text(size = 10),
-        axis.title.x = element_text()) +
-  labs(y = "y-axis", x = "x-axis", title = "Some amazing plot")
+library(dplyr)
+library(ggplot2)
 
-g
-
+correlations <- baby_names %>%  
+  group_by(Year, Gender) %>%
+  summarise(
+    Spearman = cor(rank(Count), rank(lag(Count)), 
+                 method = "spearman", use = "complete.obs"),
+    .groups = "drop"
+  )
+ # before 1990
+ avg_correlation <- correlations %>%
+     group_by(Year, Gender) %>%
+     summarise(Avg_Spearman = mean(Spearman, na.rm = TRUE), .groups = "drop")
+ 
+ ggplot(avg_correlation, aes(x = Year, y = Avg_Spearman, color = Gender)) +
+     geom_line(size = 1.2) +
+     geom_point(alpha = 0.6) +
+     geom_vline(xintercept = 1910, linetype = "dashed", color = "red") +
+     labs(
+         title = "Name Persistence by Gender: Average Spearman Correlation of Top 25 Names",
+         x = "Year",
+         y = "Average Spearman Rank Correlation",
+         color = "Gender"
+     ) +
+     theme_minimal()
+  
+ 
+ 
+ avg_correlation <- correlations %>%
+     filter(Year <= 1990) %>%   # only include years after 1990
+     group_by(Year, Gender) %>%
+     summarise(
+         Avg_Spearman = mean(Spearman, na.rm = TRUE),
+         .groups = "drop"
+     )
+ 
+ ggplot(avg_correlation, aes(x = Year, y = Avg_Spearman, color = Gender)) +
+     geom_line(size = 1.2) +
+     geom_point(alpha = 0.6) +
+     labs(
+         title = "Name Persistence by Gender (After 1990)",
+         x = "Year",
+         y = "Average Spearman Rank Correlation",
+         color = "Gender"
+     ) +
+    theme_minimal()
+ 
 ```
+  
+The Spearman rank correlation plot below illustrates the year-on-year persistence of baby name popularity before 1990, separated by gender. The correlation for female' names was consistently high, typically above 0.9, indicating that the most popular male names changed very little from one year to the next. In contrast, the correlation for boys' names was generally lower and more volatile, reflecting greater fluctuations in naming trends. This suggests that female names were more susceptible to changing cultural influences, while male names remained relatively traditional and stable over time. Despite the fluctuations, both genders show a moderate-to-high level of persistence overall.
+  
+  
+  
 
-To make your graphs look extra nice in latex world, you could use Tikz device. Replace dev - 'png' with 'tikz' in the chunk below. Notice this makes the build time longer and produces extra tex files - so if you are comfortable with this, set your device to Tikz and try it out:
+```{r Figure 1a, warning =  FALSE, fig.align = 'center', fig.cap = "Caption Here \\label{Figure1}", fig.height = 3, fig.width = 6, dev = 'png'}
+ # Calculate Spearman correlations first
+library(dplyr)
+library(ggplot2)
 
-```{r Figure2, warning =  FALSE, fig.align = 'center', fig.cap = "Caption Here \\label{Figure2}", fig.height = 3, fig.width = 6, dev = 'png'}
-
-ExampleData <- read_rds( "data/Example_data.rds")
-
-source("code/Example_Plot_Scatter.R") # Load a function from your 'code' folder. This e.g. plots scatters to your own preferences.
-source( "code/Data_Create.R") #
-
-ExampleData <- Data_Create(N = 100) # Same as the ExampleData loaded above - this is just a function to create the stored data.
-
-g <- Example_Plot_Scatter(DataInput = ExampleData,
-                          X = "Height_Score",
-                          Y = "Weight_Score",
-                          Z = "Agility_Score",
-                          Theme = theme_bw(), # run ?ggthemes for other themes.
-                          Title = "", # I prefer to use the caption set above.
-                          Ylab = "Height",
-                          Xlab = "Lenght",
-                          LegendTitle = "Agility",
-                          TitleSize = 10,
-                          LabSize = 10)
-
-g
-
-# Although the functions above are really simple, the principle is simple: containing calculations and data wrangling in their own functions will make this template much cleaner and more manageable.
-# When you start working, delete these meaningless functions and replace with your own...
-
+correlations <- baby_names %>%  
+  group_by(Year, Gender) %>%
+  summarise(
+    Spearman = cor(rank(Count), rank(lag(Count)), 
+                 method = "spearman", use = "complete.obs"),
+    .groups = "drop"
+  )
+ # After 1990
+ avg_correlation <- correlations %>%
+     group_by(Year, Gender) %>%
+     summarise(Avg_Spearman = mean(Spearman, na.rm = TRUE), .groups = "drop")
+ 
+ ggplot(avg_correlation, aes(x = Year, y = Avg_Spearman, color = Gender)) +
+     geom_line(size = 1.2) +
+     geom_point(alpha = 0.6) +
+     geom_vline(xintercept = 1910, linetype = "dashed", color = "red") +
+     labs(
+         title = "Name Persistence by Gender: Average Spearman Correlation of Top 25 Names",
+         x = "Year",
+         y = "Average Spearman Rank Correlation",
+         color = "Gender"
+     ) +
+     theme_minimal()
+  
+ 
+ 
+ avg_correlation <- correlations %>%
+     filter(Year > 1990) %>%   # only include years after 1990
+     group_by(Year, Gender) %>%
+     summarise(
+         Avg_Spearman = mean(Spearman, na.rm = TRUE),
+         .groups = "drop"
+     )
+ 
+ ggplot(avg_correlation, aes(x = Year, y = Avg_Spearman, color = Gender)) +
+     geom_line(size = 1.2) +
+     geom_point(alpha = 0.6) +
+     labs(
+         title = "Name Persistence by Gender (After 1990)",
+         x = "Year",
+         y = "Average Spearman Rank Correlation",
+         color = "Gender"
+     ) +
+    theme_minimal()
+ 
 ```
-
-To reference the plot above, add a ``\\label'' after the caption in the chunk heading, as done above. Then reference the plot as such: As can be seen, Figures \ref{Figure1}  and \ref{Figure2} are excellent, with Figure \ref{Figure2} being particularly aesthetically pleasing due to its device setting of Tikz. The nice thing now is that it correctly numbers all your figures (and sections or tables) and will update if it moves. The links are also dynamic.
-
-I very strongly suggest using ggplot2 (ideally in combination with dplyr) using the ggtheme package to change the themes of your figures.
-
-Also note the information that I have placed above the chunks in the code chunks for the figures. You can edit any of these easily - visit the Rmarkdown webpage for more information.
-
-# Splitting a page
-
-You can also very easily split a page using built-in Pandoc formatting. I comment this out in the code (as this has caused issues building the pdf for some users - which I presume to be a Pandoc issue), but you are welcome to try it out yourself by commenting out the following section in your Rmd file.
+The Spearman rank correlation after 1990 shows slightly more fluctuation than in earlier decades, particularly for female names, which dip as low as 0.75. While male names remain relatively stable, they also show occasional drops below 0.85. This suggests that name trends have become less persistent and more influenced by short-term cultural factors. Thus, I then confirm the suspicion that name popularity has become more volatile since the 1990s.
+ 
+ 
+ # Year-on-Year Surges in Baby Name Popularity
 
 
-<!-- :::::: {.columns data-latex="[T]"} -->
-<!-- ::: {.column data-latex="{0.7\textwidth}"} -->
-<!-- ```{r, echo=FALSE, fig.width=4, fig.height=4} -->
-<!-- par(mar = c(4, 4, .2, .1)) -->
-<!-- plot(cars, pch = 19) -->
-<!-- ``` -->
-<!-- ::: -->
-<!-- ::: {.column data-latex="{0.05\textwidth}"} -->
-<!-- \ -->
-<!-- ::: -->
-<!-- ::: {.column data-latex="{0.2\textwidth}"} -->
-<!-- \scriptsize -->
+```{r Figure 1b, warning =  FALSE, fig.align = 'center', fig.cap = "Caption Here \\label{Figure1}", fig.height = 3, fig.width = 6, dev = 'png'}
 
-<!-- ## Data {-} -->
-<!-- The figure on the left-hand side shows the `cars` data. -->
+ library(dplyr)
+ # Get top 500 names to reduce noise
+ top_names <- baby_names %>%
+     group_by(Year, Gender) %>%
+     arrange(desc(Count)) %>%
+     slice_head(n = 500) %>%
+     ungroup()
+ 
+ # Calculate year-on-year % change in count
+ popularity_change <- top_names %>%
+     arrange(Gender, Name, Year) %>%
+     group_by(Gender, Name) %>%
+     mutate(
+         Count_lag = lag(Count),
+         Pct_Change = (Count - Count_lag) / Count_lag
+     ) %>%
+     ungroup() %>%
+     filter(!is.na(Pct_Change), Count_lag > 20)  # remove low base counts
+ 
+ # Top 20 surges overall
+ biggest_surges <- popularity_change %>%
+     arrange(desc(Pct_Change)) %>%
+     slice_head(n = 20)
+ 
+ print(biggest_surges)
+``` 
+```{r Figure 2a, warning =  FALSE, fig.align = 'center', fig.cap = "Caption Here \\label{Figure1}", fig.height = 3, fig.width = 6, dev = 'png'}
 
-<!-- Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do -->
-<!-- eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut -->
-<!-- enim ad minim veniam, quis nostrud exercitation ullamco laboris -->
-<!-- nisi ut aliquip ex ea commodo consequat. -->
-<!-- ::: -->
-<!-- :::::: -->
+library(ggplot2)
 
+# Example: plot top surging names
+plot_names <- c("John", "Mary", "Joseph", "William")
 
-
-#  Methodology \label{Meth}
-
-## Subsection
-Ideally do not overuse subsections. It equates to bad writing.^[This is an example of a footnote by the way. Something that should also not be overused.]
-
-## Math section
-
-Equations should be written as such:
-
-\begin{align}
-\beta = \sum_{i = 1}^{\infty}\frac{\alpha^2}{\sigma_{t-1}^2} \label{eq1} \\
-\int_{x = 1}^{\infty}x_{i} = 1 \notag
-\end{align}
-
-If you would like to see the equations as you type in Rmarkdown, use $ symbols instead (see this for yourself by adjusted the equation):
-
-$$
-\beta = \sum_{i = 1}^{\infty}\frac{\alpha^2}{\sigma_{t-1}^2} \\
-\int_{x = 1}^{\infty}x_{i} = 1
-$$
-
-Note the equation above - this should appear in math in Rstudio. Writing nice math requires practice. Note I used a forward slashes to make a space in the equations. I can also align equations using  __\&__, and set to numbering only the first line. Now I will have to type ``begin equation'' which is a native \LaTeX command. Here follows a more complicated equation that you want aligned (using \& sign) and numbered:
-
-
-\begin{align}
-	y_t &= c + B(L) y_{t-1} + e_t   \label{eq2}    \\ \notag
-	e_t &= H_t^{1/2}  z_t ; \quad z_t \sim  N(0,I_N) \quad \& \quad H_t = D_tR_tD_t \\ \notag
-		D_t^2 &= {\sigma_{1,t}, \dots, \sigma_{N,t}}   \\ \notag
-		\sigma_{i,t}^2 &= \gamma_i+\kappa_{i,t}  v_{i, t-1}^2 +\eta_i  \sigma_{i, t-1}^2, \quad \forall i \\ \notag
-		R_{t, i, j} &= {diag(Q_{t, i, j}}^{-1}) . Q_{t, i, j} . diag(Q_{t, i, j}^{-1})  \\ \notag
-		Q_{t, i, j} &= (1-\alpha-\beta)  \bar{Q} + \alpha  z_t  z_t'  + \beta  Q_{t, i, j} \notag
-\end{align}
-
-Note that in \ref{eq2} I have aligned the equations by the equal signs. I also want only one tag, and I create spaces using ``quads''.
-
-See if you can figure out how to do complex math using the two examples provided in \ref{eq1} and \ref{eq2}.
-
-<!-- $$ -->
-<!-- This is a commented out section in the writing part. -->
-<!-- Comments are created by highlighting text, amnd pressing CTL+C -->
-<!-- \\begin{align} -->
-<!-- \\beta = \\alpha^2 -->
-<!-- \end{align} -->
-<!-- $$ -->
-
-
-# Including an external plot
-
-You can also include plots produced outside of your Rmarkdown file using the package *knitr*
-
-See below chunk:
-
-```{r, out.width = "205px", fig.cap=figures("Some Figure"), eval = F}
-
-knitr::include_graphics("YourFigureLocation/Logo.png")
-
+baby_names %>%
+  filter(Name %in% plot_names) %>%
+  ggplot(aes(x = Year, y = Count, color = Name)) +
+  geom_line(size = 1.2) +
+  labs(
+    title = "Surges in Name Popularity Over Time",
+    x = "Year", y = "Count"
+  ) +
+  theme_minimal(base_size = 13)
 ```
-
-
-# Results
-
-Tables can be included as follows. Use the _xtable_ (or kable) package for tables. Table placement = H implies Latex tries to place the table Here, and not on a new page (there are, however, very many ways to skin this cat. Luckily there are many forums online!).
-
-
-```{r ShortTable, results = 'asis'}
-
-library(xtable)
-data <- mtcars[1:5,] %>% tibble::as_tibble()
-
-table <- xtable(data, caption = "Short Table Example \\label{tab1}")
-  print.xtable(table,
-             # tabular.environment = "longtable",
-             floating = TRUE,
-             table.placement = 'H',
-             # scalebox = 0.3,
-             comment = FALSE,
-             caption.placement = 'bottom'
-             )
-
-```
-
-To reference calculations __in text__, _do this:_ From table \ref{tab1} we see the average value of mpg is `r mean(mtcars[1:5,]$mpg)`.
-
-Including tables that span across pages, use the following (note that I add below the table: ``continue on the next page''). This is a neat way of splitting your table across a page.
-
-Use the following default settings to build your own possibly long tables. Note that the following will fit on one page if it can, but cleanly spreads over multiple pages:
-
-```{r LongTable, results = 'asis'}
-
-library(xtable)
-
-data = mtcars %>% tibble::as_tibble()
-  addtorow          <- list()
-  addtorow$pos      <- list()
-  addtorow$pos[[1]] <- c(0)
-  addtorow$command  <- c(paste("\\hline \n",
-                               "\\endhead \n",
-                               "\\hline \n",
-                               "{\\footnotesize Continued on next page} \n",
-                               "\\endfoot \n",
-                               "\\endlastfoot \n",sep=""))
-table <- xtable(data, caption = "Long Table Example")
-  print.xtable(table,
-             tabular.environment = "longtable",
-             floating = FALSE, # Leave this as is.
-             table.placement = 'H', # Leave this as is.
-             booktabs = T, # Aesthetics
-             include.rownames = FALSE,  # Typically you don't want this in a table.
-             add.to.row = addtorow, # For adding the Continued on next page part...
-             comment = FALSE,
-             caption.placement = 'top',  # Where do you want the caption?
-             size="\\fontsize{12pt}{13pt}\\selectfont"  # Size of text in table..
-             )
-# See https://cran.r-project.org/web/packages/xtable/vignettes/xtableGallery.pdf for table inspiration
-```
-
-\hfill
-
-<!-- hfill can be used to create a space, like here between text and table. -->
-
-
-## Huxtable
-
-Huxtable is a very nice package for making working with tables between Rmarkdown and Tex easier.
-
-This cost some adjustment to the Tex templates to make it work, but it now works nicely.
-
-See documentation for this package [here](https://hughjonesd.github.io/huxtable/huxtable.html). A particularly nice addition of this package is for making the printing of regression results a joy (see [here](https://hughjonesd.github.io/huxtable/huxtable.html#creating-a-regression-table)). Here follows an example:
-
-
-If you are eager to use huxtable, comment out the Huxtable table in the Rmd template, and uncomment the colortbl package in your Rmd's root.
-
-Note that I do not include this in the ordinary template, as some latex users have complained it breaks when they build their Rmds (especially those using tidytex - I don't have this problem as I have the full Miktex installed on mine). Up to you, but I strongly recommend installing the package manually and using huxtable. To make this work, uncomment the _Adding additional latex packages_ part in yaml at the top of the Rmd file. Then comment out the huxtable example in the template below this line. Reknit, and enjoy.
-
-```{r, results = 'asis'}
-
-if(!require(huxtable)) install.packages(huxtable)
-library(huxtable)
-data(diamonds, package = 'ggplot2')
-Title <- "Regression Output"
-Label <- "Reg01"
-lm1 <- lm(price ~ carat, diamonds)
-lm2 <- lm(price ~ depth, diamonds)
-lm3 <- lm(price ~ carat + depth, diamonds)
-htab <-
-huxreg(lm1, lm2, lm3,
-                statistics = c(N = "nobs", R2 = "r.squared"),
-                note = "%stars%.") %>%
-  set_caption(Title) %>%
-  set_label(Label)
-# More settings:
-font_size(htab) <- 12
-# Let's change regression names: this is slightly hacky, but works. Comment out this section to see what the default looks like:
-  Names <- c( "Reg1", "Reg2", "Reg3")
-  for(i in 1:length(Names)) {
-    htab[1,][[1+i]] <- Names[i]
-  }
-# Now simply call the table:
-htab
-
-```
-
-FYI - R also recently introduced the gt package, which is worthwhile exploring too.
-
-# Lists
-
-To add lists, simply using the following notation
-
-* This is really simple
-
-    + Just note the spaces here - writing in R you have to sometimes be pedantic about spaces...
-
-* Note that Rmarkdown notation removes the pain of defining \LaTeX environments!
-
-# Conclusion
-
-I hope you find this template useful. Remember, stackoverflow is your friend - use it to find answers to questions. Feel free to write me a mail if you have any questions regarding the use of this package. To cite this package, simply type citation("Texevier") in Rstudio to get the citation for @Texevier (Note that uncited references in your bibtex file will not be included in References).
-
-<!-- Make title of bibliography here: -->
-<!-- \newpage -->
+The graph highlights four names—John, Mary, William, and Joseph—that showed distinct surges in popularity over time.
+Mary and John peaked early, especially between the 1910s and 1950s, reflecting their strong biblical and traditional appeal.
+William remained relatively stable, while Joseph saw renewed interest around the 1990s–2000s, possibly tied to cultural or religious revivals.
+Their early “pop” suggests these names were historically dominant and shaped broader naming trends across decades.
 
 \newpage
 
-# References {-}
+# Checking for baby name spikes after major events
+```{r Figure 3a, warning =  FALSE, fig.align = 'center', fig.cap = "Caption Here \\label{Figure1}", fig.height = 3, fig.width = 6, dev = 'png'}
+# Example: Find baby names that match artist names from Billboard
+library(dplyr)
 
-<div id="refs"></div>
+# Get unique artist names from Billboard data (assuming first word as first name)
+artist_names <- billboard %>%
+  mutate(artist_first_name = word(artist, 1)) %>%
+  distinct(artist_first_name) %>%
+  pull(artist_first_name)
+
+# Find matching baby names
+name_trends <- baby_names %>%
+  filter(Name %in% artist_names) %>%
+  group_by(Name, Year) %>%
+  summarize(Total = sum(Count))
+
+# Visualize
+ggplot(name_trends, aes(x = Year, y = Total, color = Name)) +
+  geom_line() +
+  labs(title = "Baby Names Matching Music Artists Over Time")
 
 
-# Appendix {-}
+# Example: Whitney Houston's debut (1985)
+Kanye_data <- baby_names %>%
+  filter(Name == "Kanye") %>%
+  mutate(After1985 = Year >= 1995)
 
-## Appendix A {-}
+ggplot(Kanye_data, aes(x = Year, y = Count, fill = After1985)) +
+  geom_col() +
+  geom_vline(xintercept = 1985, linetype = "dashed") +
+  labs(title = "'Kanye' Names Before/After Kanye West's Fame")
+```
+The graph shows a dramatic rise in babies named "Kanye" starting in 2001, coinciding exactly with Kanye West's breakout year after his debut album The College Dropout and work on Jay-Z's The Blueprint. This 1-year lag reflects the natural delay between cultural exposure (parents hearing the name in 2001) and birth registration. The sustained popularity post-2001 suggests Kanye's continued fame reinforced the name's appeal, while its rarity before 2001 confirms the artist's direct influence. Like "Whitney" in the 1980s, this mirrors how distinctive names spike when associated with rising stars, proving pop culture's power to reshape naming trends almost overnight.
 
-Some appendix information here
 
-## Appendix B {-}
+# Character Name Analysis (HBO_credits Data)
+
+```{r Figure 4a, warning =  FALSE, fig.align = 'center', fig.cap = "Caption Here \\label{Figure1}", fig.height = 3, fig.width = 6, dev = 'png'}
+# Get first names from actor credits
+
+actor_names <- hbo_credits %>%
+  mutate(actor_first_name = word(name, 1)) %>%
+  distinct(actor_first_name, id)
+# First, properly extract the Game of Thrones release year
+game_of_thrones_release <- hbo_titles %>%
+  filter(str_detect(title, "Game of Thrones")) %>%
+  pull(release_year) %>%
+  first()  # Takes the first release year if multiple entries exist
+
+# Now analyze the baby name trend
+arya_trend <- baby_names %>%
+  filter(Name == "Arya") %>%  # Changed from "Mary" to "Arya" for relevance
+  mutate(PostGOT = Year >= game_of_thrones_release)
+
+# Plot with vertical line at release year
+ggplot(arya_trend, aes(x = Year, y = Count)) +
+  geom_col(aes(fill = PostGOT)) +
+  geom_vline(xintercept = game_of_thrones_release, 
+             linetype = "dashed", color = "red") +
+  labs(title = "'Arya' Names Before/After Game of Thrones (2011)",
+       subtitle = "Vertical line marks series premiere",
+       x = "Year", y = "Number of Babies") +
+  scale_fill_manual(values = c("FALSE" = "gray70", "TRUE" = "#1a64d6"),
+                    name = "Post-Game of Thrones") +
+  theme_minimal()
+```
+The graph tracking the name "Arya" before and after the 2011 premiere of Game of Thrones reveals a striking example of pop culture's influence on baby naming trends. Prior to 2011, the name was virtually nonexistent, with near-zero recorded births, highlighting its obscurity before the series debuted. However, a dramatic spike occurs immediately after 2011, coinciding with the show's rise to global fame and the introduction of Arya Stark as a beloved, strong-willed character. The graph serves as compelling evidence that fictional characters—especially those with strong, positive associations—can significantly shape real-world naming practices.
+
+# Top 10 famous artists
+
+```{r Figure 5a, warning =  FALSE, fig.align = 'center', fig.cap = "Caption Here \\label{Figure1}", fig.height = 3, fig.width = 6, dev = 'png'}
+songs_data <- data.frame(billboard)
+
+
+# Group by artist and count occurrences
+artist_counts <- songs_data %>%
+    group_by(artist) %>%
+    summarise(count = n())
+
+# Select top 10 artists based on count
+top10_artists <- artist_counts %>%
+    top_n(10, count)  # Select top 10 artists by count
+
+# Plotting
+ggplot(top10_artists, aes(x = reorder(artist, count), y = count)) +
+    geom_bar(stat = "identity", fill = "green") +
+    labs(x = "Artist", y = "Number of Songs", title = "Top 10 Popular Artists") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+#  Bubble plot baby names counts by year
+```{r}
+aggregate_names <- function(baby_names) {
+    baby_names %>%
+        group_by(Year, Name) %>%
+        summarise(Count = sum(Count)) %>%
+        arrange(desc(Count))
+}
+
+# Aggregate baby names data
+agg_baby_names <- aggregate_names(baby_names)
+
+# Select the top 10 names per year and ungroup the data
+top_names_per_year <- agg_baby_names %>%
+    group_by(Year) %>%
+    slice_max(Count, n = 1) %>%
+    ungroup()
+
+# Create the bubble plot with adjusted transparency and size scale
+bubble_plot <- ggplot(top_names_per_year, aes(x = Year, y = Name, size = Count)) +
+    geom_point(alpha = 0.6, color = "powderblue") +  # Adjust color and transparency
+    scale_size_continuous(range = c(2, 15)) +  # Adjust size range as needed
+    labs(
+        title = "Popularity of Baby Names Over Time (Top 10 Names Per Year)",
+        x = "Year",
+        y = "Name",
+        size = "Count"  # Legend title for the size aesthetic
+    ) +
+    theme_minimal() +
+    theme(
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.text.y = element_text(size = 7)
+    )
+
+# Display the plot
+print(bubble_plot)
+
+
+```
+
+This bubble plot visualizes the popularity trends of the top 10 baby names in the U.S. over time, with each bubble representing a name's annual frequency. Larger bubbles (e.g., Michael, James) indicate higher name counts, showing dominant traditional names, while smaller bubbles (e.g., Isabella, Sophia) reflect more modern favorites. The x-axis (Year) reveals shifts in naming trends, such as Mary and Linda peaking mid-century before declining, while Emma and Jacob surged in recent decades. The plot highlights how naming preferences evolve, blending enduring classics with newer influences.
+
+# Conclusion
+
+Traditional names like John and Mary dominated early eras with stable, biblical appeal, while modern naming trends—especially post-1990—show increasing volatility, particularly for female names. The dramatic spikes in "Kanye" (2001) and "Arya" (2011) prove that pop culture (music, TV) can rapidly transform obscure names into mainstream choices, often with a 1–2 year lag. Male names historically exhibited stronger persistence, but recent decades reveal a cultural shift where all names are now more susceptible to short-term influences. Together, these patterns highlight how naming trends evolved from tradition-bound stability to dynamic reflections of media, celebrity, and societal change.
+
+
+
 
