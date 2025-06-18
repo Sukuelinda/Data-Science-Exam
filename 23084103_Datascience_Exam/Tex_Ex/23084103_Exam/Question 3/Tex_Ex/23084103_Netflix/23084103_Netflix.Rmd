@@ -1,92 +1,46 @@
 ---
-# IMPORTANT: Change settings here, but DO NOT change the spacing.
-# Remove comments and add values where applicable.
-# The descriptions below should be self-explanatory
-
-title: "An analytical briefing on content trends, audience preferences, and production dynamics"
-#subtitle: "This will appear as Right Header"
-
-documentclass: "elsarticle"
-
-# --------- Thesis title (Optional - set to FALSE by default).
-# You can move the details below around as you please.
-Thesis_FP: FALSE
-# Entry1: "An unbelievable study with a title spanning multiple lines."
-# Entry2: "\\textbf{Some Guy}" # textbf for bold
-# Entry3: "A thesis submitted toward the degree of Doctor of Philosophy"
-# Uni_Logo: Tex/Logo.png # Place a logo in the indicated location (from your root, e.g. defaults to ~/Tex/Logo.png) and uncomment this line. Leave uncommented for no image
-# Logo_width: 0.3 # If using a logo - use this to set width (size) of image
-# Entry4: "Under the supervision of: \\vfill Prof. Joe Smith and Dr. Frank Smith"
-# Entry5: "Stellenbosch University"
-# Entry6: April 2020
-# Entry7:
-# Entry8:
-
-# --------- Front Page
-# Comment: ----- Follow this pattern for up to 5 authors
-AddTitle: TRUE # Use FALSE when submitting to peer reviewed platform. This will remove author names.
-Author1: "Linda Dube"
-Ref1: "Stellenbosch University, Western Cape" # First Author's Affiliation
-Email1: "23084103\\@sun.ac.za" # First Author's Email address
-
-
-
-# ----- Manage headers and footers:
-#BottomLFooter: $Title$
-#BottomCFooter:
-#TopLHeader: \leftmark # Adds section name at topleft. Remove comment to add it.
-BottomRFooter: "\\footnotesize Page \\thepage" # Add a '#' before this line to remove footer.
-addtoprule: TRUE
-addfootrule: TRUE               # Use if footers added. Add '#' to remove line.
-
-# --------- page margins:
-margin: 2.3 # Sides
-bottom: 2 # bottom
-top: 2.5 # Top
-HardSet_layout: TRUE # Hard-set the spacing of words in your document. This will stop LaTeX squashing text to fit on pages, e.g.
-# This is done by hard-setting the spacing dimensions. Set to FALSE if you want LaTeX to optimize this for your paper.
-
-# --------- Line numbers
-linenumbers: FALSE # Used when submitting to journal
-
-# ---------- References settings:
-# You can download cls format here: https://www.zotero.org/ - simply search for your institution. You can also edit and save cls formats here: https://editor.citationstyles.org/about/
-# Hit download, store it in Tex/ folder, and change reference below - easy.
-bibliography: Tex/ref.bib       # Do not edit: Keep this naming convention and location.
-csl: Tex/harvard-stellenbosch-university.csl # referencing format used.
-# By default, the bibliography only displays the cited references. If you want to change this, you can comment out one of the following:
-#nocite: '@*' # Add all items in bibliography, whether cited or not
-# nocite: |  # add specific references that aren't cited
-#  @grinold2000
-#  @Someoneelse2010
-
-# ---------- General:
-RemovePreprintSubmittedTo: TRUE  # Removes the 'preprint submitted to...' at bottom of titlepage
-Journal: "Journal of Finance"   # Journal that the paper will be submitting to, if RemovePreprintSubmittedTo is set to TRUE.
-toc: FALSE                       # Add a table of contents
-numbersections: TRUE             # Should sections (and thus figures and tables) be numbered?
-fontsize: 11pt                  # Set fontsize
-linestretch: 1.2                # Set distance between lines.
-link-citations: TRUE            # This creates dynamic links to the papers in reference list.
-
-### Adding additional latex packages:
-# header-includes:
-#    - \usepackage{colortbl} # Add additional packages here.
-
+title: An analytical briefing on content trends, audience preferences, and production
+  dynamics
+documentclass: elsarticle
+Thesis_FP: false
 output:
+  word_document: default
   pdf_document:
-    keep_tex: TRUE
+    keep_tex: true
     template: Tex/TexDefault.txt
-    fig_width: 3.5 # Adjust default figure sizes. This can also be done in the chunks of the text.
+    fig_width: 3.5
     fig_height: 3.5
+    latex_engine: xelatex
+Author1: Linda Dube
+Ref1: Stellenbosch University, Western Cape
+Email1: 23084103\@sun.ac.za
+CorrespAuthor_1: false
+BottomRFooter: \footnotesize Page \thepage
+addtoprule: true
+addfootrule: true
+margin: 2.3
+bottom: 2
+top: 2.5
+HardSet_layout: true
+linenumbers: false
+bibliography: Tex/ref.bib
+csl: "Tex/harvard-stellenbosch-university.csl"
+RemovePreprintSubmittedTo: true
+Journal: Journal of Finance
+toc: false
+numbersections: true
+fontsize: 11pt
+linestretch: 1.2
+link-citations: true
+AddTitle: true
 abstract: |
-  blabla
+  This report explores patterns in Netflix content using crdits, titles and movie_infor data, focusing on popularity, content type, country of origin, and movie characteristics. Findings show that TV shows consistently outperform movies in popularity, with UK and Sweden leading in show performance. Meanwhile, the US and Mexico dominate in film popularity, and India produces the longest movies. These insights offer strategic direction for content investment in future streaming ventures.
 ---
 
 
 
 # Introduction \label{Introduction}
-
+With Netflix facing a decline in users and share price, understanding content preferences is critical for new streaming ventures. This analysis examines content popularity, regional trends, and movie characteristics on Netflix. By analyzing shows and movies by country, runtime, and cast structure, we identify patterns in global viewing behavior. The findings aim to inform investor decisions and optimize future content strategies.
 
 # Data  {-}
 ```{r}
@@ -99,6 +53,9 @@ movie_Info <- read.csv("C:/Users/sukol/Documents/Masters frst semester/Data Scie
 write.csv(titles, "C:/Users/sukol/Documents/titles.csv", row.names = FALSE)
 write.csv(credits, "C:/Users/sukol/Documents/credits.csv", row.names = FALSE)
 
+library(summarytools)
+options(summarytools.style = "plain", summarytools.browser.notknit = FALSE)
+
 titles_summary <- dfSummary(titles, plain.ascii = TRUE, style = "grid")
 print(titles_summary)
 credits_summary <- dfSummary(credits, plain.ascii = TRUE, style = "grid")
@@ -108,7 +65,7 @@ print(movie_Info_summary)
 
 ```
 
-After using the dfSummary() function, we can conclude that the dataset is well-organized and clean. The summary output shows no duplicates, very few missing values, and consistent variable structures across over 6,000 entries. These indicators confirm that the dataset is reliable and ready for further analysis.
+After using the dfSummary() function, we can conclude that the data set is well-organized and clean. The summary output shows no duplicates, very few missing values, and consistent variable structures across over 6,000 entries. These indicators confirm that the data set is reliable and ready for further analysis.
 
 # Results and Analysis
 
@@ -211,7 +168,7 @@ ggplot(filtered_movies, aes(x = country, y = runtime)) +
 
 ```
 
-Interpret the box plot
+The boxplot shows the distribution of movie runtimes by country, with runtime in minutes on the x-axis and countries on the y-axis. India has the highest median movie runtime (around 130 minutes) and a wide spread, indicating high variability and many long films. The US and GB have moderate runtimes, typically around 90–100 minutes, with fewer extreme outliers. France and Spain tend to produce shorter, more consistent-length movies. The NA category, likely representing unspecified or mixed countries, shows the broadest range of runtimes.
 
 
 \newpage
@@ -228,7 +185,7 @@ credits %>%
 
 
 ```
-Are there more actors or directors per movie?
+The graph shows that every movie has more actors than directors, with actor bars consistently taller across all entries. This is expected, as most films require multiple characters played by different actors but typically only one or two directors to oversee the production. Directors manage the overall vision, while actors bring individual roles to life. Hence, the nature of filmmaking naturally results in a higher number of actors per movie.
 
 
 ## For interests sakes: most credited actors or actresses
@@ -239,8 +196,8 @@ credits %>%
   slice_head(n = 10)
 
 ```
-who has more roles
+Shah Rukh Khan appears in the highest number of Netflix titles, with 30 credited roles, making him the most prominently featured actor in the data set. This likely reflects both his long-standing dominance in Bollywood and the strong demand for Indian cinema on streaming platforms. His global fan base and consistent involvement in high-profile productions contribute to his visibility. Netflix’s expanding catalog of Indian content further amplifies his presence.
 
 # Conlusion
 
-
+The analysis shows that serialized TV shows, particularly from the UK and Sweden, drive stronger engagement than movies, suggesting that new platforms should prioritize locally produced high-quality series. In contrast, countries like the US and Mexico lead in movie popularity, reflecting their dominance in global film production. India’s notably long runtimes suggest strong regional storytelling preferences. To succeed, a new streaming service should invest in engaging, binge-worthy TV content while selectively curating movies from dominant production regions.
