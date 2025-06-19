@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # Purpose
 
 This folder details the steps I followed to solve the exam questions. The code and individual plots can be found in the readme files within each solution folder, which are updated separately on GitHub.
-### Question 1
+## Question 1
 
  I analyzed U.S. baby naming trends from 1910 to 2014 using Social Security data, enriched with Billboard, movie, and TV datasets to assess cultural influences. I examined the stability of popular names over time using Spearman rank correlations and identified growing volatility in name persistence, especially post-1990. I highlighted historical surges in names like John and Mary and linked modern spikes (e.g., Kanye, Arya) to pop culture events. Time-series and bubble plots were used to visualize these trends. The analysis shows a shift from traditional to media-influenced naming.
 
@@ -30,4 +30,9 @@ In this question I created a bespoke R function to efficiently load the billiona
  
 ## Question 5
 
+This slide pack explores key lifestyle factors influencing good health, based on participant-level data. We examine how stress levels, sleep quality, age, and physical activity relate to overall well-being. Using visual analysis and regression, we highlight consistent patterns between health outcomes and daily habits. While some statistical limitations exist, the trends offer valuable insights. Our goal is to inform simple, actionable steps for improving public health.
+
+
 # Conclusion
+I genuinely tried my best, I know it does not look like it but I struggled in this exam.
+But I want to say thank you for the challenge this exam actually taught me a lot and the things you taught in class now finally made sense. Thank you.

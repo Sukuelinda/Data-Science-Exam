@@ -1,0 +1,100 @@
+---
+title: "Health Question 5"
+author: "Linda"
+date: "`r Sys.Date()`"
+output:
+  beamer_presentation: default
+  powerpoint_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Data
+```{r}
+Health <- read.csv("C:/Users/sukol/Documents/Masters frst semester/Data Science Exam/Data-Science-Exam/23084103_Datascience_Exam/Tex_Ex/23084103_Exam/Question_5/Data/Health/HealthCare.csv")
+```
+This dataset captures various health and lifestyle metrics of individuals participating in a weight management study. Each participant is uniquely identified and described by age, gender, and baseline weight. Key physiological and behavioral variables include basal metabolic rate (BMR), daily caloric intake, and physical activity level. The dataset tracks weight change over a given duration, based on caloric surplus or deficit, while also incorporating diet composition, sleep quality, and stress levels. These factors collectively allow for analysis of how lifestyle and biological traits affect weight outcomes.
+
+# Introduction
+
+# Analysis 
+
+```{r}
+library(tidyverse)
+
+
+library(ggplot2)
+
+ggplot(Health, aes(x = Gender, y = Stress.Level, fill = Gender)) +
+  geom_boxplot() +
+  labs(title = "Stress Levels by Gender", x = "Gender", y = "Stress Level") +
+  theme_minimal()
+
+
+
+
+
+```
+
+On average, females report higher and more variable stress levels than males, whose stress tends to be more tightly clustered around the median. This difference may reflect factors such as emotional workload, social expectations, reporting behavior, and life circumstances like caregiving or job types. These influences likely contribute to the broader range and elevated stress experienced by females in the sample.
+
+```{r Figure 1b}
+
+library(dplyr)
+library(ggplot2)
+
+Health %>%
+  group_by(Sleep.Quality) %>%
+  summarise(AvgStress = mean(Stress.Level, na.rm = TRUE)) %>%
+  ggplot(aes(x = Sleep.Quality, y = AvgStress, fill = Sleep.Quality)) +
+  geom_col() +
+  labs(title = "Average Stress Level by Sleep Quality", x = "Sleep Quality", y = "Average Stress Level") +
+  theme_minimal()
+
+
+
+```
+
+Participants who report poor sleep quality tend to have the highest average stress levels, while those with good or excellent sleep report significantly lower stress. This suggests a strong negative relationship between sleep quality and stress: as sleep quality improves, stress levels tend to decrease. It highlights how sleep plays a critical role in managing psychological well-being.
+
+\newpage
+# Regression 
+In this section I created a binary variable that combines low stress and good sleep quality to define “Good Health”.
+
+```{r}
+Health$GoodHealth <- ifelse(Health$Stress.Level <= 4 & Health$Sleep.Quality %in% c("Good", "Excellent"), 1, 0)
+
+# Load required library
+library(tidyverse)
+
+# Simulate the proxy for "Good Health"
+data <- Health %>%
+  mutate(GoodHealth = ifelse(Stress.Level <= 4 & Sleep.Quality %in% c("Good", "Excellent"), 1, 0))
+
+# Convert categorical variables
+data$Gender <- as.factor(data$Gender)
+data$Physical.Activity.Level <- factor(data$Physical.Activity.Level, 
+                                       levels = c("Sedentary", "Lightly Active", "Moderately Active", "Very Active"))
+data$Sleep.Quality <- factor(data$Sleep.Quality, 
+                             levels = c("Poor", "Fair", "Good", "Excellent"))
+
+# Run logistic regression
+model <- glm(GoodHealth ~ Age + Gender + Daily.Calories.Consumed + 
+               Physical.Activity.Level + Sleep.Quality + Stress.Level,
+             data = data, family = "binomial")
+
+# Summary of model
+summary(model)
+
+
+```
+Although the direction of the coefficients aligns with expectations—stress and age reduce the likelihood of good health, while sleep quality improves it—none of the predictors are statistically significant. All p-values are close to 1, and the z-values are near zero, suggesting no reliable relationship. The extremely large standard errors imply the model is unstable, likely due to small sample size, poor variable scaling, or multicollinearity. The model structure is conceptually sound, but the data issues must be addressed. Further cleaning and diagnostics are needed to draw valid conclusions and due to time constraints this will not be done in this analysis.
+
+\newpage
+
+# Conclusion
+This presentation highlights key insights into the determinants of good health based on survey data. We find that poor sleep quality and high stress levels are strongly associated with worse health outcomes, while higher physical activity and better sleep correlate with improved health. Although regression results were inconclusive due to data limitations, visual analyses clearly show consistent trends. These findings emphasize the importance of managing stress and improving sleep for better well-being. Our recommendations focus on promoting healthier lifestyle habits as cost-effective public health interventions.
+
