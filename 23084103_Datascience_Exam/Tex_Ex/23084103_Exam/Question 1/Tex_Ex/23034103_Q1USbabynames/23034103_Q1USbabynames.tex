@@ -414,22 +414,27 @@ gender, time, and state.
 
 Findings \# Spearman Rank Correlation of Baby Names
 
-\begin{figure}[H]
+\begin{verbatim}
+## 
+##  Spearman's rank correlation rho
+## 
+## data:  top_25_males_1995$Count and top_25_males_1998$Count
+## S = 0, p-value = 3.196e-07
+## alternative hypothesis: true rho is not equal to 0
+## sample estimates:
+## rho 
+##   1
+\end{verbatim}
 
-{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure1-1}
+There is a perfect positive rank correlation (ρ = 1) between the
+popularity (count) of the top 25 male names in 1995 and those in 1998.
+This means that the relative rankings of these names remained exactly
+the same across the two years. The p-value (\textless{} 0.000001)
+indicates that this result is statistically significant, so the observed
+correlation is very unlikely due to chance.
 
-}
-
-\caption{Caption Here \label{Figure1}}\label{fig:Figure1-1}
-\end{figure}
-\begin{figure}[H]
-
-{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure1-2}
-
-}
-
-\caption{Caption Here \label{Figure1}}\label{fig:Figure1-2}
-\end{figure}
+\includegraphics{23034103_Q1USbabynames_files/figure-latex/unnamed-chunk-2-1.pdf}
+\includegraphics{23034103_Q1USbabynames_files/figure-latex/unnamed-chunk-2-2.pdf}
 
 The Spearman rank correlation plot below illustrates the year-on-year
 persistence of baby name popularity before 1990, separated by gender.
@@ -444,7 +449,7 @@ show a moderate-to-high level of persistence overall.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 1a-1}
+{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 1a-1} 
 
 }
 
@@ -452,7 +457,7 @@ show a moderate-to-high level of persistence overall.
 \end{figure}
 \begin{figure}[H]
 
-{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 1a-2}
+{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 1a-2} 
 
 }
 
@@ -497,7 +502,7 @@ volatile since the 1990s.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 2a-1}
+{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 2a-1} 
 
 }
 
@@ -520,7 +525,7 @@ events}\label{checking-for-baby-name-spikes-after-major-events}
 
 \begin{figure}[H]
 
-{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 3a-1}
+{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 3a-1} 
 
 }
 
@@ -528,7 +533,7 @@ events}\label{checking-for-baby-name-spikes-after-major-events}
 \end{figure}
 \begin{figure}[H]
 
-{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 3a-2}
+{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 3a-2} 
 
 }
 
@@ -551,7 +556,7 @@ Data)}\label{character-name-analysis-hbo_credits-data}
 
 \begin{figure}[H]
 
-{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 4a-1}
+{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 4a-1} 
 
 }
 
@@ -573,7 +578,7 @@ significantly shape real-world naming practices.
 
 \begin{figure}[H]
 
-{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 5a-1}
+{\centering \includegraphics{23034103_Q1USbabynames_files/figure-latex/Figure 5a-1} 
 
 }
 
@@ -583,7 +588,7 @@ significantly shape real-world naming practices.
 \section{Bubble plot baby names counts by
 year}\label{bubble-plot-baby-names-counts-by-year}
 
-\includegraphics{23034103_Q1USbabynames_files/figure-latex/unnamed-chunk-2-1.pdf}
+\includegraphics{23034103_Q1USbabynames_files/figure-latex/unnamed-chunk-3-1.pdf}
 
 This bubble plot visualizes the popularity trends of the top 10 baby
 names in the U.S. over time, with each bubble representing a name's
